@@ -9,7 +9,7 @@ from flask import request
 from flask import render_template
 from babel.numbers import format_number
 
-from isago import MATRIX, Calculator
+from isago import MATRIX, Calculator, std_round
 
 LOCALE = "fr_FR"
 CFA2KWH = "cfa2kwh"
@@ -18,6 +18,21 @@ METER_KINDS = ("single-phase", "three-phases")
 
 logger = logging.getLogger(__name__)
 app = Flask(__name__)
+
+
+@app.route("/a-propos")
+def about():
+    return render_template('a-propos.html')
+
+
+@app.route("/faq")
+def faq():
+    return render_template('faq.html')
+
+
+@app.route("/conseils")
+def advices():
+    return render_template('conseils.html')
 
 
 def get_meter_groups():
@@ -64,8 +79,8 @@ def home():
             'kind': kind,
             'amperage': amperage,
             'meter_conf': "{kind}_{amp}".format(kind=kind, amp=amperage),
-            'value': value,
-            'previous_kwh': previous_kwh,
+            'value': std_round(value),
+            'previous_kwh': std_round(previous_kwh),
             'operation': operation
         }
 

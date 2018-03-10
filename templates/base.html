@@ -3,12 +3,12 @@
 	<meta charset="utf-8">
 	<title>I SAGO – tarifs de l'éléctricité au Mali</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta property="og:title" content="{{ title }}" />
-	<meta property="og:url" content="{{ content_url }}" />
-	<meta property="og:type" content="{{ type }}" />
+	<meta property="og:title" content="I SAGO – tarifs de l'éléctricité au Mali" />
+	<meta property="og:url" content="https://isago.ml" />
+	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="fr_FR" />
 		
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="{{ content_description }}">
 	<meta name="keywords" content="{% if keywords %},{% for keyword in keywords %}{{ keyword }},{% endfor %}{% endif %}" />
 	<link rel="canonical" href="https://isago.ml">
@@ -16,10 +16,18 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
+	<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+      <h5 class="my-0 mr-md-auto font-weight-normal">isago.ml<sub>β</sub></h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="/">Calculateur</a>
+        <a class="p-2 text-dark" href="/conseils">Conseils</a>
+        <a class="p-2 text-dark" href="/faq">F.A.Q</a>
+        <a class="p-2 text-dark" href="/a-propos">À propos</a>
+      </nav>
+      <a class="btn btn-outline-primary" href="/tarifs-pdf">Télécharger PDF</a>
+    </div>
+
 	<div class="container">
-	<header>
-	<h1>isago.ml<sub>β</sub></h1>
-	</header>
 	{% block content %}{% endblock %}
 	</div>
 </body>
