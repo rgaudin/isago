@@ -31,7 +31,8 @@ def get_meter_groups():
                            'power': amp['power'],
                            'code': "{kind}_{amp}"
                            .format(kind=kind, amp=amp['amperage'])}
-                          for amp in mk['amperage'].values()]
+                          for amp in sorted(mk['amperage'].values(),
+                                            key=lambda x: x['amperage'])]
         }
         groups.append(group)
     return groups
