@@ -1,0 +1,263 @@
+{
+  "stamp": 240,
+  "single-phase": {
+    "label": "monophas\u00e9 2 fils",
+    "nb_phase": 1,
+    "amperage": {
+      "5": {
+        "nb_phase": 1,
+        "amperage": 5,
+        "power": 1.1,
+        "ppkwh": [
+          60,
+          95,
+          112,
+          133
+        ],
+        "maint": [
+          1,
+          1,
+          3,
+          3
+        ],
+        "lights": 3,
+        "vat": [
+          0,
+          0,
+          0.18,
+          0.18
+        ]
+      },
+      "10": {
+        "nb_phase": 1,
+        "amperage": 10,
+        "power": 2.2,
+        "ppkwh": [
+          112,
+          112,
+          112,
+          133
+        ],
+        "maint": 3,
+        "lights": 3,
+        "vat": 0.18
+      },
+      "15": {
+        "nb_phase": 1,
+        "amperage": 15,
+        "power": 3.3,
+        "ppkwh": [
+          112,
+          112,
+          112,
+          133
+        ],
+        "maint": 3,
+        "lights": 4,
+        "vat": 0.18
+      },
+      "20": {
+        "nb_phase": 1,
+        "amperage": 20,
+        "power": 4.4,
+        "ppkwh": [
+          113,
+          113,
+          113,
+          134
+        ],
+        "maint": 4,
+        "lights": 5,
+        "vat": 0.18
+      },
+      "25": {
+        "nb_phase": 1,
+        "amperage": 25,
+        "power": 5.5,
+        "ppkwh": [
+          113,
+          113,
+          113,
+          134
+        ],
+        "maint": 4,
+        "lights": 6,
+        "vat": 0.18
+      },
+      "30": {
+        "nb_phase": 1,
+        "amperage": 30,
+        "power": 6.6,
+        "ppkwh": [
+          113,
+          113,
+          113,
+          134
+        ],
+        "maint": 4,
+        "lights": 7,
+        "vat": 0.18
+      },
+      "35": {
+        "nb_phase": 1,
+        "amperage": 35,
+        "power": 7.7,
+        "ppkwh": [
+          113,
+          113,
+          113,
+          134
+        ],
+        "maint": 4,
+        "lights": 8,
+        "vat": 0.18
+      },
+      "40": {
+        "nb_phase": 1,
+        "amperage": 40,
+        "power": 8.8,
+        "ppkwh": [
+          113,
+          113,
+          113,
+          134
+        ],
+        "maint": 4,
+        "lights": 9,
+        "vat": 0.18
+      },
+      "45": {
+        "nb_phase": 1,
+        "amperage": 45,
+        "power": 9.9,
+        "ppkwh": [
+          113,
+          113,
+          113,
+          134
+        ],
+        "maint": 4,
+        "lights": 10,
+        "vat": 0.18
+      },
+      "50": {
+        "nb_phase": 1,
+        "amperage": 50,
+        "power": 11,
+        "ppkwh": [
+          114,
+          114,
+          114,
+          135
+        ],
+        "maint": 5,
+        "lights": 11,
+        "vat": 0.18
+      },
+      "55": {
+        "nb_phase": 1,
+        "amperage": 55,
+        "power": 12.1,
+        "ppkwh": [
+          114,
+          114,
+          114,
+          135
+        ],
+        "maint": 5,
+        "lights": 12,
+        "vat": 0.18
+      },
+      "60": {
+        "nb_phase": 1,
+        "amperage": 60,
+        "power": 13.2,
+        "ppkwh": [
+          114,
+          114,
+          114,
+          135
+        ],
+        "maint": 5,
+        "lights": 13,
+        "vat": 0.18
+      }
+    }
+  },
+  "three-phases": {
+    "label": "triphas\u00e9 4 fils",
+    "nb_phase": 1,
+    "amperage": {
+      "10": {
+        "nb_phase": 3,
+        "amperage": 10,
+        "power": 6.6,
+        "ppkwh": [
+          113,
+          113,
+          113,
+          134
+        ],
+        "maint": 4,
+        "lights": 7,
+        "vat": 0.18
+      },
+      "15": {
+        "nb_phase": 3,
+        "amperage": 15,
+        "power": 9.9,
+        "ppkwh": [
+          120,
+          120,
+          120,
+          141
+        ],
+        "maint": 11,
+        "lights": 10,
+        "vat": 0.18
+      },
+      "20": {
+        "nb_phase": 3,
+        "amperage": 20,
+        "power": 13.2,
+        "ppkwh": [
+          123,
+          123,
+          123,
+          144
+        ],
+        "maint": 14,
+        "lights": 13,
+        "vat": 0.18
+      },
+      "25": {
+        "nb_phase": 3,
+        "amperage": 25,
+        "power": 16.2,
+        "ppkwh": [
+          123,
+          123,
+          123,
+          145
+        ],
+        "maint": 15,
+        "lights": 14,
+        "vat": 0.18
+      },
+      "30": {
+        "nb_phase": 3,
+        "amperage": 30,
+        "power": 19.8,
+        "ppkwh": [
+          125,
+          125,
+          125,
+          146
+        ],
+        "maint": 16,
+        "lights": 15,
+        "vat": 0.18
+      }
+    }
+  }
+}
