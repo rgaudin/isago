@@ -1,0 +1,26 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>I SAGO – tarifs de l'éléctricité au Mali</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta property="og:title" content="{{ title }}" />
+	<meta property="og:url" content="{{ content_url }}" />
+	<meta property="og:type" content="{{ type }}" />
+	<meta property="og:locale" content="fr_FR" />
+		
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="{{ content_description }}">
+	<meta name="keywords" content="{% if keywords %},{% for keyword in keywords %}{{ keyword }},{% endfor %}{% endif %}" />
+	<link rel="canonical" href="https://isago.ml">
+	<link rel="shortcut icon" href="/assets/favicon.png" type="image/png">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+	<div class="container">
+	<header>
+	<h1>isago.ml<sub>β</sub></h1>
+	</header>
+	{% block content %}{% endblock %}
+	</div>
+</body>
+</html>

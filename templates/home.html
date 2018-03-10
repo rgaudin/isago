@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+	<form method="POST">
+		<div class="form-group">
+			<label for="meter_conf">Compteur</label>
+			<select name="meter_conf" id="meter_conf" aria-describedby="meterHelp" required="required" class="form-control">
+				{% for group in groups %}
+				<optgroup label="{{ group.label }}">{{ group.label }}</optgroup>
+					{% for amp in group.amperages %}
+						<option value="{{ group.kind}}_{{amp.amperage }}" {% if conf.meter_conf == amp.code %}selected="selected"{% endif %}>{{ amp.amperage }}A ({{ amp.power }}kVA)</option>
+					{% endfor %}
+				{% endfor %}
+			</select>
+			<small id="meterHelp" class="form-text text-muted">Le type de votre compteur. Généralement <em>monophasé 5A</em></small>
+		</div>
+		<div class="form-group">
+			<label for="value">Montant / Unités</label>
+			<input name="value" type="number" min="0" step="0.01" class="form-control" id="value" aria-describedby="inputHelp" placeholder="Saisir le montant en FCFA ou le nombre de kWh" required="required" {% if conf.value %}value="{{ conf.value }}"{% endif %}>
+			<small id="inputHelp" class="form-text text-muted">Montant en FCFA à convertir ou nombre de kWh souhaités.</small>
+		</div>
+		<div class="form-group">
+			<label for="previous_kwh">Consommation précédente (optionnel)</label>
+			<input name="previous_kwh" type="number" min="0" step="0.01" class="form-control" id="previous_kwh" aria-describedby="previousHelp" placeholder="Saisir le nombre de kWh" {% if conf.previous_kwh %}value="{{ conf.previous_kwh }}"{% endif %}>
+			<small id="previousHelp" class="form-text text-muted">Le coût dépend de tous les achats du mois (entre le 1<sup>er</sup> et le 31. Renseignez la somme des kWh achetés depuis le 1<sup>er</sup>.</small>
+		</div>
+		<div class="form-group">
+			<button type="submit" name="cfa2kwh" class="btn btn-primary">FCFA vers kWh</button>
+			<button type="submit" name="kwh2cfa" class="btn">kWh vers FCFA</button>
+		</div>
+	</form>
+</div>
+	{% if summary %}
+<div class="row">
+	<h3>Résultats</h3>
+	<table class="table">
+		<caption>blabla bla bla</caption>
+  		<thead><tr><th>Montant</th><th>kWh</th><th>Coût final/kWh</th></tr></thead>
+  		<tbody><tr><td>{{ summary.amount }} F</td><td>{{ summary.nb_kwh }}</td><td>{{ summary.average }}</td></tbody>
+  	</tr>
+<div class="row">
+<hr />
+<div class="row">
+	<table class="table table-striped thead-light table-bordered">
+  	<thead>
+  		<th>Tranche</th>
+  		<th class="text-right">kWh</th>
+  		<th class="text-center">P.U</th>
+  		<th class="text-right">Total</th>
+  		<th class="text-right">TVA</th>
+  		<th class="text-right">Total TTC</th>
+  	</thead>
+  	
+  		{% if calculator.previous_kwh %}
+  		<tbody>
+  		<tr><th class="text-center" colspan="6">CONSOMMATION ANTÉRIEURE ({{ calculator.previous_kwh }} kWh) {{ calculator.previous_cons.get_current_position() }}</th></tr>
+  		
+  		{% for cs_num, cs in calculator.previous_cons.used_slices.items() %}
+  		<tr>
+  			<th>Tranche {{ cs_num }}</th>
+  			<td class="text-right">{{ cs.nb_kwh }}</td>
+  			<td class="text-center">{{ cs.slice.ppkwh }}</td>
+  			<td class="text-right">{{ cs.price }}</td>
+  			<td class="text-right">{{ cs.vat }}</td>
+  			<td class="text-right">{{ cs.cost }} F</td>
+  		</tr>
+  		{% endfor %}
+  		<tr><th>Éclairage Public</th>
+  			<td class="text-right">{{ calculator.previous_cons.nb_kwh }}</td>
+  			<td class="text-center">{{ calculator.previous_cons.meter.lights }}</td>
+  			<td class="text-right">{{ calculator.previous_cons.lights }}</td>
+  			<td class="text-right">0</td>
+  			<td class="text-right">{{ calculator.previous_cons.lights }} F</td>
+  		</tr>
+
+  		</tbody>
+  		<tbody>
+  		<tr><th class="text-center" colspan="6">CONSOMMATION DEMANDÉE (xx)</th></tr>
+  		{% else %}
+  		<tbody>
+  		{% endif %}
+
+  		{% for cs_num, cs in consumption.used_slices.items() %}
+  		<tr>
+  			<th>Tranche {{ cs_num }}</th>
+  			<td class="text-right">{{ cs.nb_kwh }}</td>
+  			<td class="text-center">{{ cs.slice.ppkwh }}</td>
+  			<td class="text-right">{{ cs.price }}</td>
+  			<td class="text-right">{{ cs.vat }}</td>
+  			<td class="text-right">{{ cs.cost }} F</td>
+  		</tr>
+  		{% endfor %}
+  		<tr><th>Éclairage Public</th>
+  			<td class="text-right">{{ consumption.nb_kwh }}</td>
+  			<td class="text-center">{{ consumption.meter.lights }}</td>
+  			<td class="text-right">{{ consumption.lights }}</td>
+  			<td class="text-right">0</td>
+  			<td class="text-right">{{ consumption.lights }} F</td>
+  		</tr>
+  		<tr><th colspan="5">Timbre</th>
+  			<td class="text-right">{{ calculator.get_stamp_cost() }} F</td>
+  		</tr>
+  		<tr><th colspan="5" class="text-right">GRAND TOTAL</th>
+  			<th class="text-right">{{ summary.amount }} F</th>
+  		</tr>
+  	</tbody>
+  	</table>
+</div>
+	{% endif %}
+{% endblock %}
