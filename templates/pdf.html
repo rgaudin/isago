@@ -1,0 +1,70 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Tarification ISAGO</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<style type="text/css">
+		h1 {
+			font-size: 1.8rem;
+			text-transform: uppercase;
+			text-align: center;
+		}
+		.compteur {
+			text-decoration: underline;
+		}
+		table tr td { text-align: center; }
+		table tr th { text-align: center; }
+		table tr th:first-child { text-align: left; }
+		table thead tr th { font-size: .8rem; }
+		.table thead th { vertical-align: middle; }
+	</style>
+</head>
+<body>
+	<div class="container">
+	<h1>Tarification nationale électricité basse tension prépaiement</h1>
+	<table class="table table-striped thead-light table-bordered">
+		<thead>
+		<tr>
+			<th rowspan="2">Type de comptage</th>
+			<th rowspan="2">Puissance<br />[kVA]</th>
+			<th rowspan="2">Location / Entretien<br />Mensuel (FCFA)</th>
+			<th colspan="4">Tranches de consommation</th>
+			<th rowspan="2">Éclairage Public<br />TVA n/a</th>
+		</tr>
+		<tr>
+			<th>0-50 kWh</th>
+			<th>51-100 kWh</th>
+			<th>101-200 kWh</th>
+			<th>Surplus</th>
+		</tr>
+		</thead>
+		<tbody>
+			{% for key, compteur in matrix.items() %}
+			{% if key != "stamp" %}
+			<tr><th class="compteur" colspan="8">{{ compteur.label }}</th></tr>
+			{% for amp in compteur.amperage.values() %}
+				<tr><th>{{ amp.amperage }} Ampères</th>
+					<td>{{ amp.power }}</td>
+					<td>{{ amp.maint }}</td>
+					<td>{{ amp.ppkwh[0] }}</td>
+					<td>{{ amp.ppkwh[1] }}</td>
+					<td>{{ amp.ppkwh[2] }}</td>
+					<td>{{ amp.ppkwh[3] }}</td>
+					<td>{{ amp.lights }}</td>
+				</tr>
+			{% endfor %}
+			{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+	<h2>Nota</h2>
+	<ul>
+		<li>Il est appliqué 18% de TVA à la consommation et à l'entretien-location, sauf aux cent (100) premiers kWh du mois des abonnés 2 fils 5A qui en sont exonérés.</li>
+		<li>La redevance <em>Location / Entretien</em> est intégrée dans les prix par tranche.</li>
+		<li>La <em>redevance Éclairage Public</em> est exonérée de TVA mais vient en plus des prix par tranche.</li>
+	</ul>
+	</div>
+</body>
+</html>

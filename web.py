@@ -35,6 +35,11 @@ def advices():
     return render_template('conseils.html')
 
 
+@app.route("/render-pdf")
+def render_pdf():
+    return render_template('pdf.html', matrix=MATRIX)
+
+
 def get_meter_groups():
     groups = []
     for kind in METER_KINDS:

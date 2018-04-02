@@ -1,4 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
-<p>À venir…</p>
+<h2>Questions / réponses</h2>
+<ul>
+	<li><a href="#q1">Je n'obtiens pas le nombre de kWh indiqué par le site. Pourquoi ?</a></li>
+	<li><a href="#q2">L'électricité prépayé (ISAGO) est-elle plus chère qu'avec le compteur classique ?</a></li>
+	<li><a href="#q3">L'électricité est-elle trop chère au Mali ?</a></li>
+	<li><a href="#q3">Pourquoi l'électricité est-elle si chère au Mali ?</a></li>
+</ul>
+<hr />
+
+<a name="q1"></a>
+<h3>Je n'obtiens pas le nombre de kWh indiqué par le site. Pourquoi ?</h3>
+<p>L'EDM n'utilise pas exactement sa propre grille de tarifs 🙄 donc il y a souvent de petites différences (moins d'un kWh) mais <strong>toujours</strong> à l'avantage du client.</p>
+
+<a name="q2"></a>
+<h3>L'électricité prépayé (<em>ISAGO</em>) est-elle plus chère qu'avec le compteur classique ?</h3>
+<p>Non. C'est le même tarif qui est appliqué <strong>mais</strong> en pratique, puisque vous devez prépayer (et donc calculer à l'avance) votre consommation, vous achetez plus de crédit donc cela revient plus cher.</p>
+<p>Aussi, chaque transaction vous coûte 240F de timbre.</p>
+
+<a name="q3"></a>
+<h3>L'électricité est-elle trop chère au Mali ?</h3>
+<p>Oui. L'électricité est très chère au Mali dans l'absolue mais elle est surtout trop chère pour la population.
+<p>À titre de comparaison, en France (pays où l'électricité est peu chère), le kWh est vendu entre 82F et 104F.</p>
+<p>Un ménage français consomme en moyenne 412kWh par mois et paie 38 000F pour ça.</p>
+<p>Au Mali, la même quantité coûte 55 000F soit 45% plus chère alors que le revenu moyen y est environ 13 fois moins élevé.</p>
+
+<a name="q4"></a>
+<h3>Pourquoi l'électricité est-elle si chère au Mali ?</h3>
+<ol>
+	<li>L'électricité produite au Mali est insuffisante pour les besoins de la population.</li>
+	<li>Pour palier à la rareté (et donc encourager à moins consommer), le prix de l'électricité est fixé haut.</li>
+	<li>Parce que l'électricité est indispensable au développement, les tranches sociales permettent un usage minimal.</li>
+	<li>L'électricité produite au Mali est de trois types :
+		<ul>
+			<li>Hydraulique : pas très chère mais limitée et partagée avec les autres pays exploitant le Niger.</li>
+			<li>Thermique : très très cherè (combustion de carburant). L'État provisionne 200 milliards de FCFA par an pour ce carburant.</li>
+			<li>Photovoltaïque : moins chère mais peu développée pour l'instant.</li>
+		</ul>
+	</li>
+	<li>Les équipements, le carburant et la maintenance pour la production d'électricité proviennent de l'extérieur.</li>
+	<li>Les partenaires financiers (FMI, Banque Mondiale) conditionnent leur appui à une subvention limitée de l'électricité par l'État.</li>
+</ol>
 {% endblock %}
