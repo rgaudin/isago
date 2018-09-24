@@ -1,9 +1,8 @@
 FROM tiangolo/uwsgi-nginx:python3.6
 
-RUN pip install -r /app/requirements.txt
-
-COPY nginx.conf /etc/nginx/conf.d/
 COPY ./app /app
+RUN pip install -r /app/requirements.txt
+COPY nginx.conf /etc/nginx/conf.d/
 
 ENV UWSGI_INI /app/uwsgi.ini
 WORKDIR /app
