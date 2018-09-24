@@ -33,15 +33,17 @@ class Meter(object):
             return "triphasé"
 
     def __str__(self):
-        return "{phase} {amperage}A".format(phase=self.get_verbose_phase(),
-                                            amperage=self.amperage)
+        return "{phase} {amperage}A".format(
+            phase=self.get_verbose_phase(), amperage=self.amperage
+        )
 
-with open('isago.json', 'r') as fd:
+
+with open("isago.json", "r") as fd:
     MATRIX = json.load(fd)
 
 
 def get_meter(kind, amperage):
-    config = MATRIX[kind]['amperage'][str(amperage)]
+    config = MATRIX[kind]["amperage"][str(amperage)]
     return Meter(config)
 
 
@@ -52,7 +54,6 @@ def std_round(amount):
 
 
 class Slice(object):
-
     def __init__(self, meter, slice_number):
         assert isinstance(meter, Meter)
         assert slice_number in range(1, 5)
@@ -60,8 +61,7 @@ class Slice(object):
         self.meter = meter
 
     def __str__(self):
-        return "{meter} / TR{slice}".format(meter=self.meter,
-                                            slice=self.number)
+        return "{meter} / TR{slice}".format(meter=self.meter, slice=self.number)
 
     @property
     def index(self):
@@ -89,15 +89,16 @@ class Slice(object):
             return std_round(self.meter.SLICES[self.index])
         if self.index == len(self.meter.SLICES):
             return None
-        return std_round(self.meter.SLICES[self.index]
-                         - self.meter.SLICES[self.index - 1])
+        return std_round(
+            self.meter.SLICES[self.index] - self.meter.SLICES[self.index - 1]
+        )
 
     @property
     def lightspkwh(self):
         return self.meter.lights
 
     def get_lights_cost(self, kwh):
-        ''' not slice-related per say '''
+        """ not slice-related per say """
         return std_round(self.meter.lights * kwh)
 
     def get_price(self, nb_kwh):
@@ -107,16 +108,15 @@ class Slice(object):
         return std_round(self.vat_rate * self.get_price(nb_kwh))
 
     def get_cost(self, nb_kwh):
-        return std_round(sum([self.get_price(nb_kwh),
-                              self.get_vat(nb_kwh)]))
+        return std_round(sum([self.get_price(nb_kwh), self.get_vat(nb_kwh)]))
 
     def get_lights(self, nb_kwh):
         return std_round(self.lightspkwh * nb_kwh)
 
     def get_total_cost(self, nb_kwh):
-        return std_round(sum([self.get_price(nb_kwh),
-                              self.get_vat(nb_kwh),
-                              self.get_lights(nb_kwh)]))
+        return std_round(
+            sum([self.get_price(nb_kwh), self.get_vat(nb_kwh), self.get_lights(nb_kwh)])
+        )
 
     def get_maint(self, nb_kwh):  # already included in price
         return std_round(self.maintpkwh * nb_kwh)
@@ -141,7 +141,6 @@ class Slice(object):
 
 
 class SliceUsage(object):
-
     def __init__(self, nb_kwh, price, vat, maint, cost, mslice):
         self.nb_kwh = std_round(nb_kwh)
         self.price = std_round(price)
@@ -155,16 +154,15 @@ class SliceUsage(object):
 
     def to_dict(self):
         return {
-            'nb_kwh': self.nb_kwh,
-            'price': self.price,
-            'vat': self.vat,
-            'maint': self.maint,
-            'cost': self.cost,
+            "nb_kwh": self.nb_kwh,
+            "price": self.price,
+            "vat": self.vat,
+            "maint": self.maint,
+            "cost": self.cost,
         }
 
 
 class Consumption(object):
-
     def __init__(self, meter, nb_kwh=0, previous_slice=1, previous_kwh=0):
         self.meter = meter
         self.nb_kwh = nb_kwh
@@ -189,7 +187,7 @@ class Consumption(object):
                 break
 
         existing = su.nb_kwh if su is not None else 0
-        return {'slice': meter_slice.number, 'existing': existing}
+        return {"slice": meter_slice.number, "existing": existing}
 
     def calculate(self):
         # ventilate consumption accross slices with SliceUage
@@ -213,18 +211,20 @@ class Consumption(object):
                 ms_size -= self.previous_kwh
                 previous_handled = True
 
-            if (ms_size is not None and remaining_kwh > ms_size):
+            if ms_size is not None and remaining_kwh > ms_size:
                 slice_kwh = ms_size
             else:
                 slice_kwh = remaining_kwh
 
             remaining_kwh -= slice_kwh
-            su = SliceUsage(nb_kwh=slice_kwh,
-                            price=meter_slice.get_price(slice_kwh),
-                            vat=meter_slice.get_vat(slice_kwh),
-                            maint=meter_slice.get_maint(slice_kwh),
-                            cost=meter_slice.get_cost(slice_kwh),
-                            mslice=meter_slice)
+            su = SliceUsage(
+                nb_kwh=slice_kwh,
+                price=meter_slice.get_price(slice_kwh),
+                vat=meter_slice.get_vat(slice_kwh),
+                maint=meter_slice.get_maint(slice_kwh),
+                cost=meter_slice.get_cost(slice_kwh),
+                mslice=meter_slice,
+            )
             self.slices[meter_slice.number] = su
 
         # add public clights cost
@@ -234,18 +234,14 @@ class Consumption(object):
         return std_round(self.meter.lights * kwh)
 
     def get_cost(self):
-        return std_round(sum([self.lights]
-                             + [sl.cost for sl in self.slices.values()]))
+        return std_round(sum([self.lights] + [sl.cost for sl in self.slices.values()]))
 
     def to_dict(self):
         return {
-            'nb_kwh': self.nb_kwh,
-            'lights': self.lights,
-            'slices': {
-                number: su.to_dict()
-                for number, su in self.used_slices.items()
-            },
-            'cost': self.get_cost(),
+            "nb_kwh": self.nb_kwh,
+            "lights": self.lights,
+            "slices": {number: su.to_dict() for number, su in self.used_slices.items()},
+            "cost": self.get_cost(),
         }
 
     @property
@@ -308,7 +304,6 @@ class Consumption(object):
 
 
 class Calculator(object):
-
     def __init__(self, nb_phase, amperage, previous_kwh):
         self.meter = get_meter(nb_phase, amperage)
         self.previous_cons = Consumption(self.meter, previous_kwh)
@@ -333,14 +328,15 @@ class Calculator(object):
 
     @classmethod
     def get_final(cls, consumption):
-        return cls.round_final_amount(
-            cls.get_stamp_cost() + consumption.get_cost())
+        return cls.round_final_amount(cls.get_stamp_cost() + consumption.get_cost())
 
     def consumption_for_kwh(self, nb_kwh):
-        cons = Consumption(meter=self.meter,
-                           nb_kwh=nb_kwh,
-                           previous_slice=self.previous_position['slice'],
-                           previous_kwh=self.previous_position['existing'])
+        cons = Consumption(
+            meter=self.meter,
+            nb_kwh=nb_kwh,
+            previous_slice=self.previous_position["slice"],
+            previous_kwh=self.previous_position["existing"],
+        )
         return cons
 
     def consumption_for_amount(self, amount):
@@ -352,8 +348,9 @@ class Calculator(object):
 
         cons = Consumption(
             meter=self.meter,
-            previous_slice=self.previous_position['slice'],
-            previous_kwh=self.previous_position['existing'])
+            previous_slice=self.previous_position["slice"],
+            previous_kwh=self.previous_position["existing"],
+        )
         nb_kwh = cons.get_kwh_for(remaining_amount)
         cons.nb_kwh = nb_kwh
         cons.calculate()

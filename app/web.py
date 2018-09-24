@@ -22,22 +22,22 @@ app = Flask(__name__)
 
 @app.route("/a-propos")
 def about():
-    return render_template('a-propos.html')
+    return render_template("a-propos.html")
 
 
 @app.route("/faq")
 def faq():
-    return render_template('faq.html')
+    return render_template("faq.html")
 
 
 @app.route("/conseils")
 def advices():
-    return render_template('conseils.html')
+    return render_template("conseils.html")
 
 
 @app.route("/render-pdf")
 def render_pdf():
-    return render_template('pdf.html', matrix=MATRIX)
+    return render_template("pdf.html", matrix=MATRIX)
 
 
 def get_meter_groups():
@@ -45,86 +45,86 @@ def get_meter_groups():
     for kind in METER_KINDS:
         mk = MATRIX[kind]
         group = {
-            'kind': kind,
-            'label': mk['label'],
-            'amperages': [{'amperage': amp['amperage'],
-                           'power': amp['power'],
-                           'code': "{kind}_{amp}"
-                           .format(kind=kind, amp=amp['amperage'])}
-                          for amp in sorted(mk['amperage'].values(),
-                                            key=lambda x: x['amperage'])]
+            "kind": kind,
+            "label": mk["label"],
+            "amperages": [
+                {
+                    "amperage": amp["amperage"],
+                    "power": amp["power"],
+                    "code": "{kind}_{amp}".format(kind=kind, amp=amp["amperage"]),
+                }
+                for amp in sorted(mk["amperage"].values(), key=lambda x: x["amperage"])
+            ],
         }
         groups.append(group)
     return groups
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=["GET", "POST"])
 def home():
     context = {}
-    context['conf'] = {}
+    context["conf"] = {}
 
     def validated_inputs(form_data):
-        raw_meter = form_data.get('meter_conf').strip()
-        kind, amp_str = raw_meter.split('_', 1)
+        raw_meter = form_data.get("meter_conf").strip()
+        kind, amp_str = raw_meter.split("_", 1)
         assert kind in METER_KINDS
 
         amperage = int(amp_str)
-        assert str(amperage) in MATRIX[kind]['amperage'].keys()
+        assert str(amperage) in MATRIX[kind]["amperage"].keys()
 
-        value_raw = request.form.get('value')
+        value_raw = request.form.get("value")
         value = float(value_raw.strip())
-        previous_kwh_raw = request.form.get('previous_kwh')
-        previous_kwh = float(previous_kwh_raw.strip()) \
-            if previous_kwh_raw else 0
+        previous_kwh_raw = request.form.get("previous_kwh")
+        previous_kwh = float(previous_kwh_raw.strip()) if previous_kwh_raw else 0
 
         operation = KWH2CFA if KWH2CFA in request.form else CFA2KWH
         assert operation in (KWH2CFA, CFA2KWH)
 
         return {
-            'kind': kind,
-            'amperage': amperage,
-            'meter_conf': "{kind}_{amp}".format(kind=kind, amp=amperage),
-            'value': std_round(value),
-            'previous_kwh': std_round(previous_kwh),
-            'operation': operation
+            "kind": kind,
+            "amperage": amperage,
+            "meter_conf": "{kind}_{amp}".format(kind=kind, amp=amperage),
+            "value": std_round(value),
+            "previous_kwh": std_round(previous_kwh),
+            "operation": operation,
         }
 
-    context['groups'] = get_meter_groups()
-    if request.method == 'POST':
+    context["groups"] = get_meter_groups()
+    if request.method == "POST":
         try:
             conf = validated_inputs(request.form)
         except Exception as exp:
             logger.exception(exp)
-            context['error'] = "Incorrect Data: {}".format(exp)
+            context["error"] = "Incorrect Data: {}".format(exp)
         else:
-            context['conf'] = conf
-            calc = Calculator(conf['kind'], conf['amperage'],
-                              conf['previous_kwh'])
-            context['calculator'] = calc
+            context["conf"] = conf
+            calc = Calculator(conf["kind"], conf["amperage"], conf["previous_kwh"])
+            context["calculator"] = calc
 
-            if conf['operation'] == CFA2KWH:
-                amount = conf['value']
+            if conf["operation"] == CFA2KWH:
+                amount = conf["value"]
                 cons = calc.consumption_for_amount(amount)
                 nb_kwh = cons.nb_kwh
                 average = calc.avg(nb_kwh, amount)
 
-            elif conf['operation'] == KWH2CFA:
-                nb_kwh = conf['value']
+            elif conf["operation"] == KWH2CFA:
+                nb_kwh = conf["value"]
                 cons = calc.consumption_for_kwh(nb_kwh)
                 amount = calc.get_final(cons)
 
             average = calc.avg(nb_kwh, amount)
-            context['consumption'] = cons
-            context['summary'] = {
-                'nb_kwh': nb_kwh,
-                'amount': format_number(amount, locale=LOCALE),
-                'average': format_number(average, locale=LOCALE),
+            context["consumption"] = cons
+            context["summary"] = {
+                "nb_kwh": nb_kwh,
+                "amount": format_number(amount, locale=LOCALE),
+                "average": format_number(average, locale=LOCALE),
             }
 
     # from pprint import pprint as pp ; pp(context)
 
-    return render_template('home.html', **context)
+    return render_template("home.html", **context)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()
